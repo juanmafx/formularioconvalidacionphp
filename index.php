@@ -47,12 +47,12 @@ if( !empty($_FILES['archivo']['tmp_name']) ||
     !empty($_FILES['archivo']['size']))
 {
     if (move_uploaded_file($_FILES['archivo']['tmp_name'],'archivos/'.$nuevonombre)){ 
-      	 $tieneAdjunto = true;
-				 //echo "El archivo ha sido cargado correctamente."; 
-   	}else{ 
-				 $tieneAdjunto = false;	 
-      	 //echo "Ocurrió algún error al subir el fichero. No pudo guardarse. "; 
-   	} 		
+               $tieneAdjunto = true;
+                                 //echo "El archivo ha sido cargado correctamente."; 
+           }else{ 
+                                 $tieneAdjunto = false;         
+               //echo "Ocurrió algún error al subir el fichero. No pudo guardarse. "; 
+           }                 
 }
 //para mostrar loq ue esta guardando la variable _FILES
 //echo '<pre>';
@@ -70,10 +70,10 @@ $contenido .= '<p>Direciión Actual: <strong>'.$_POST['direccion'].'</strong>';
 $contenido.='<p>Teléfono: <strong>'.$_POST['telefono'].'</strong>';
 $contenido.='<p>Correo electrónico: <strong>'.$_POST['email'].'</strong>';
 $contenido.='<p>Profesión:<strong>'.$_POST['profesion'].'</strong>';
-$contenido.='<p>Ha trabajado o trabaja en algún área relacionada a discapacidad: <strong>'.$_POST['c1'].'</strong>';
- $contenido.='<p>Realizo otros cursos de Equinoterapia: : <strong>'.$_POST['c2'].'</strong>';
-  $contenido.='<p>Que experiencia tiene en equitación: <strong>'.$_POST['c3'].'</strong>';
- $contenido.='<p>Comentarios: <strong>'.$_POST['mensaje'].'</strong>';
+$contenido.='<p>Campo 1 <strong>'.$_POST['c1'].'</strong>';
+ $contenido.='<p>Campo 2: <strong>'.$_POST['c2'].'</strong>';
+  $contenido.='<p>Campo 3: <strong>'.$_POST['c3'].'</strong>';
+ $contenido.='<p>Mesnsaje: <strong>'.$_POST['mensaje'].'</strong>';
 $contenido .= '<hr />';
 $contenido .= '</body></html>';
 
@@ -85,44 +85,13 @@ $mail->Send();
 
 $flag='ok';
 $mensaje=' <div id="ok"> 
-<strong>TU FORMULARIO FUE ENVIADO</strong>
-<br>En tu mail encontrarás un correo de la fundación con toda la información del curso a dictarse el 20 21 22 Y 23 DE FEBRERO DEL  2014(4dias)<br>
-<br>
-<p>INFORMACION:</p>  <br>
-<p>ATENNCION</p> <a href="infocurso.html">Mas informacion de como depositar </a>	<br>
-<srong>El costo del curso de es de pesos 2000 para Argentinos </strong>.<br>
-Dolares 320usd para extranejeros.<br><br>
-Padres de miños especiales acceden a un descuento del 50%.<br>
-<br>
-Deposite solo 500 pesos, el resto el dia de la acreditación.
-<strong>Datos de la cuenta para depositar</strong><br>
-<h2>BANCO ROELA</h2><br>
-FUNDACION CORDOBESA DE EQUINOTERAPIA:<br><br>
-CUIT: 30707937471<br><br>
-CUENTA: 1706/7<br><br>
-CUENTA CORRIENTE EN PESOS<br><br>
-SUCURSAL SAN MARTIN - 0005 <br><br>
-CBU: 2470005610000000170674 <br><br>
-<strong>Descuento</strong><br>
-Hasta el 31 de enero el curso cuenta con un descuento del 15%<br>
-Totalizando asi 1700 pesos.<br>
-Conforme su insripcion depositando 500 Pesos. Asi accedera al descuento.
+<strong>SUSCAMPOS FUERON ENVIADO</strong>
 
-<br><br>
-Desde Septiembre de 2013 la fundacion cordobesa de equinoterapia cuenta con <strong>CUENTA CORRIENTE </strong> en el Banco Roela.<br>
-<br>
-<br>
-<br>
-	
-Recibiste en tu casilla de emial, el costo , cronograma y forma de pago del curso.<br>
-Para estar al tanto de todas las actividades de la fundacion seguinos en facebook.<br>
-<a  target="_blank" href="http://es-es.facebook.com/fundacionequinoterapia">www.facebook.com/fundacionequinoterapia</a><br>
-Ante cualquier duda contactanos.
 
  </div>';
 } else {
-	
-//si no todos los campos fueron completados se frena el envio y avisamos al usuario	
+        
+//si no todos los campos fueron completados se frena el envio y avisamos al usuario        
 $flag='err';
 $mensaje='<div id="error">- Los campos marcados con * son requeridos. '.$error_archivo.'</div>';
 
@@ -130,66 +99,47 @@ $mensaje='<div id="error">- Los campos marcados con * son requeridos. '.$error_a
 }
 ?>
 
-
-<html>
+<!doctype html>
+<html lang="es">
 <head>
-
+<meta charset="utf-8">
+<title>Formulario con Valudacion</title>
 </head>
 <body>
 <? echo $mensaje; /*mostramos el estado de envio del form */ ?>
 <? if ($flag!='ok') { ?>
-<br>
 <form action="#" method="post" enctype="multipart/form-data">
-<div align="left">
-
-<table>
-<tr>
-<td>
-<p><font color="red">*</font> <font color="black">Nombre</font></font> <br />
-<input  <? if (isset ($flag) && $_POST['nombre']=='') { echo 'class="error"';} else {echo 'class="campo"';} ?> style="width:245px" class="campo" type="text" name="nombre" value="<? echo $_POST['nombre'];?>" /></p>
-</td>
-<td>
-<p><font color="black">Dirección Actual</font> <br />
-<input  <? if (isset ($flag) && $_POST['direccion']=='') { echo 'class="error"';} else {echo 'class="campo"';} ?> style="width:245px" class="campo" type="text" name="direccion" value="<? echo $_POST['direccion'];?>" /></p>
-</td>
-</tr>
-
-<tr>
-<td>
-<p><font color="red">*</font>  <font color="black">Teléfono</font> <br />
-<input <? if (isset ($flag) && $_POST['telefono']=='') { echo 'class="error"';} else {echo 'class="campo"';} ?> style="width:245px" class="campo" type="text" name="telefono" value="<? echo $_POST['telefono'];?>" /></p>
-</td>
-<td>
-<p><font color="red">*</font>  <font color="black">Correo electrónico</font> <br />
-<input  pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"  required	 <? if (isset ($flag) && $_POST['email']=='') { echo 'class="error"';} else {echo 'class="campo"';} ?> style="width:245px" class="campo" type="text" name="email" value="<? echo $_POST['email'];?>" /></p>
-</td>
-</tr>
-</table>
-
-<p> <font color="black">¿Profesión?</font> <br />
-<textarea style="width:500px; height:40px;" name="profesion" class="campo"></textarea>
-
-<p> <font color="black">Ha trabajado o trabaja en algún área relacionada a discapacidad:</font> <br />
-<textarea style="width:500px; height:100px;" name="c1" class="campo"></textarea>
+Nombre
+<input  <? if (isset ($flag) && $_POST['nombre']=='') { echo 'class="error"';} else {echo 'class="campo"';}?>  type="text" name="nombre" value="<? echo $_POST['nombre'];?>" >
 <br>
-
-<p> <font color="black">Realizo otros cursos de Equinoterapia:</font> <br />
-<textarea style="width:500px; height:100px;" name="c2" class="campo"></textarea>
+Actual
+<input  <? if (isset ($flag) && $_POST['direccion']=='') { echo 'class="error"';} else {echo 'class="campo"';} ?>   type="text" name="direccion" value="<? echo $_POST['direccion'];?>" >
 <br>
-
-<p> <font color="black">Que experiencia tiene en equitación:</font> <br />
-<textarea style="width:500px; height:100px;" name="c3" class="campo"></textarea>
+Teléfono
+<input <? if (isset ($flag) && $_POST['telefono']=='') { echo 'class="error"';} else {echo 'class="campo"';} ?>  type="text" name="telefono" value="<? echo $_POST['telefono'];?>" >
 <br>
+Correo electrónico:
+<input  pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"  required  <? if (isset ($flag) && $_POST['email']=='') { echo 'class="error"';} else {echo 'class="campo"';} ?>  type="text" name="email" value="<? echo $_POST['email'];?>" >
+<br>
+¿Profesión?
+<textarea  name="profesion" class="campo"></textarea>
+<br>
+Campo Uno:
+<textarea  name="c1" class="campo"></textarea>
+<br>
+Campo DOS:
+<textarea name="c2" class="campo"></textarea>
+<br>
+Campo Tres:
+<textarea  name="c3" class="campo"></textarea>
+<br>
+Comentarios
+<textarea  <? if (isset ($flag) && $_POST['mensaje']=='') { echo 'class="com-error"';} else {echo 'class="com"';} ?>  name="mensaje"><? echo $_POST['mensaje'];?></textarea>
+<br>
+<input class="boton" type="submit" name="enviar" value="Enviar" >
+</form>
 
-
-<p><font color="red">*</font>  <font color="black">Comentarios</font> <br />
-<textarea  <? if (isset ($flag) && $_POST['mensaje']=='') { echo 'class="com-error"';} else {echo 'class="com"';} ?>style="width:500px; height:200px;" class="com" name="mensaje"><? echo $_POST['mensaje'];?></textarea></p>
-
-<input class="boton" type="submit" name="enviar" value="Enviar" />
-	</form>
-	<? } ?>
-
-
-
+<? } ?>
+#juanmafx 
 </body>
 </html>
