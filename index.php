@@ -109,16 +109,16 @@ $mensaje='<div id="error">- Los campos marcados con * son requeridos. '.$error_a
 <? echo $mensaje; /*mostramos el estado de envio del form */ ?>
 <? if ($flag!='ok') { ?>
 <form action="#" method="post" enctype="multipart/form-data">
-Nombre
+Nombre*
 <input  <? if (isset ($flag) && $_POST['nombre']=='') { echo 'class="error"';} else {echo 'class="campo"';}?>  type="text" name="nombre" value="<? echo $_POST['nombre'];?>" >
 <br>
 Actual
 <input  <? if (isset ($flag) && $_POST['direccion']=='') { echo 'class="error"';} else {echo 'class="campo"';} ?>   type="text" name="direccion" value="<? echo $_POST['direccion'];?>" >
 <br>
-Teléfono
+Teléfono*
 <input <? if (isset ($flag) && $_POST['telefono']=='') { echo 'class="error"';} else {echo 'class="campo"';} ?>  type="text" name="telefono" value="<? echo $_POST['telefono'];?>" >
 <br>
-Correo electrónico:
+Correo electrónico*:
 <input  pattern="^[a-zA-Z0-9.!#$%'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"  required  <? if (isset ($flag) && $_POST['email']=='') { echo 'class="error"';} else {echo 'class="campo"';} ?>  type="text" name="email" value="<? echo $_POST['email'];?>" >
 <br>
 ¿Profesión?
