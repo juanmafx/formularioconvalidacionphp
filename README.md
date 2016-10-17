@@ -1,4 +1,4 @@
-formularioconvalidacionphp
+Formulario PHP con Validacion y hacia pagina Objetivo
 ==========================
 
 Formulario con validacion php.
