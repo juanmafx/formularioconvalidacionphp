@@ -83,65 +83,11 @@ Este proyecto es software libre y está disponible bajo una licencia abierta. Pu
 
 ---
 
-<p align="center">Hecho con 💻 por Juanmafx</p>
+<p align="center">Hecho con 💻 por [Link Text](https://www.example.com)/p> 
+<p align="center">Hecho con 💻 por [Link Text]([https://www.example.com](https://github.com/juanmafx))/p> 
 
+https://github.com/juanmafx
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# 📄 Formulario PHP con Validación y Envío a Página Objetivo
-
-## 🇪🇸 Español (Original)
-
-**Formulario simple en PHP con validación de campos y envío de datos.**
-
-### Acerca del Formulario
-
-Este proyecto proporciona un formulario que valida datos esenciales antes de su envío. Es ideal como base para proyectos que requieran captura de información del usuario.
-
-El formulario valida los siguientes campos obligatorios:
-
-- **Nombre**
-- **Email**
-- **Teléfono**
-
-Gracias a HTML5, el campo **Email** aplica una validación automática de formato, mientras que **Nombre** y **Teléfono** son validados manualmente mediante PHP.
-
-### Funcionamiento
-
-Este formulario funciona con dos archivos principales:
-
-- `class.phpmailer.php`
-- `index.php`
-
-En `index.php`, antes de la etiqueta `<html>`, se incluye el código PHP necesario para procesar la validación y el envío de los datos.
-
-El formulario HTML contiene los `input` para capturar los datos requeridos.
-
----
 
 ## 🇫🇷 Français
 
