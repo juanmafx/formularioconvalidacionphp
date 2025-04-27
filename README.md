@@ -1,37 +1,77 @@
-Formulario PHP con Validacion y hacia pagina Objetivo
-==========================
 
-Formulario con validacion php.
+<p align="center"><strong>Formulario PHP con Validación y Envío a Página Objetivo</strong></p>
 
-El formulario cumple la función de recibir datos y validarlos.
+<p align="center">
+Un formulario simple en PHP con validación de campos y envío de datos.
+</p>
 
-Campos que requieren validación:
+<p align="center">
+<img src="https://img.shields.io/badge/PHP-5.6%2B-blue.svg" alt="PHP Version">
+<img src="https://img.shields.io/badge/Estado-Activo-brightgreen.svg" alt="Estado del Proyecto">
+<img src="https://img.shields.io/badge/Licencia-Libre-lightgrey.svg" alt="Licencia">
+</p>
 
--Nombre
--Email
--Telefono
+## Acerca del Formulario
 
-Osea esos campos son con asteriso.
-Ademas gracias a HTML5 el campo de Email tira un error cuando el usuario no ingresa su email.
-De esa forma también tenemos el primer filtro.
-Y luego los otros dos.
+Este proyecto proporciona un formulario que valida datos esenciales antes de su envío. Es ideal como base para proyectos que requieran captura de información del usuario.
 
+El formulario valida los siguientes campos obligatorios:
 
-<hr>
-Como funciona:
-Son dos archivos.
--class.phpmailer.php
--index.php
+- **Nombre**
+- **Email**
+- **Teléfono**
 
-Esos dos archivos funcionan en un MIX desde el archivo index.php
-Donde en index php antes del <html> Cargamos unos párrafos de código php que hacen a la función.
+Gracias a HTML5, el campo **Email** aplica una validación automática de formato, mientras que **Nombre** y **Teléfono** son validados manualmente mediante PHP.
 
-Luego en el campo  donde esta el formulario estarán los input de cada uno.
+## Funcionamiento
 
-Saludos.
-#juanmafx
+Este formulario funciona con dos archivos principales:
 
+- `class.phpmailer.php`
+- `index.php`
 
+En `index.php`, antes de la etiqueta `<html>`, se incluye el código PHP necesario para procesar la validación y el envío de los datos.
 
+El formulario HTML contiene los `input` para capturar los datos requeridos.
 
+## Requisitos
 
+- Servidor web con PHP 5.6 o superior
+- Navegador web moderno con soporte para HTML5
+
+## Instalación
+
+1. Clonar o descargar los archivos del proyecto.
+2. Asegurarse de tener habilitada la función de envío de correos en el servidor.
+3. Configurar `class.phpmailer.php` si se requiere personalización en el envío de correos.
+4. Ejecutar `index.php` en un entorno de servidor local o remoto.
+
+## Palabras clave
+
+- Formulario PHP
+- Validación de formulario
+- Formulario de contacto
+- Formulario de contacto con validación
+- Envío de correos en PHP
+- PHP Mailer
+- Validación HTML5
+
+## Contribuciones
+
+Gracias por considerar contribuir al proyecto. ¡Cualquier mejora, comentario o sugerencia es bienvenida!
+
+## Código de Conducta
+
+Para mantener una comunidad abierta y respetuosa, por favor revisa y respeta las buenas prácticas de contribución.
+
+## Vulnerabilidades de Seguridad
+
+Si descubres alguna vulnerabilidad de seguridad en este formulario, por favor contáctame para poder solucionarlo de inmediato.
+
+## Licencia
+
+Este proyecto es software libre y está disponible bajo una licencia abierta. Puedes usarlo, modificarlo y adaptarlo libremente.
+
+---
+
+<p align="center">Hecho con 💻 por Juanmafx</p>
