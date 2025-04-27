@@ -1,13 +1,4 @@
 
-
-
-
-
-
-
-
-
-
 <p align="center"><strong>Formulario PHP con Validación y Envío a Página Objetivo</strong></p>
 
 <p align="center">
@@ -82,10 +73,6 @@ Si descubres alguna vulnerabilidad de seguridad en este formulario, por favor co
 Este proyecto es software libre y está disponible bajo una licencia abierta. Puedes usarlo, modificarlo y adaptarlo libremente.
 
 ---
-
-<p align="center">Hecho con 💻 por [Link Text](https://www.example.com)/p> 
-<p align="center">Hecho con 💻 por [Link Text]([https://www.example.com](https://github.com/juanmafx))/p> 
-
 https://github.com/juanmafx
 
 
