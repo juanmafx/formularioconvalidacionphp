@@ -250,22 +250,5 @@ El formulario HTML contiene los `input` para capturar los datos requeridos.
 
 ---
 
-## 🚀 Contribuciones
-
-Gracias por considerar contribuir al proyecto. ¡Cualquier mejora, comentario o sugerencia es bienvenida!
-
-## 📜 Código de Conducta
-
-Para mantener una comunidad abierta y respetuosa, por favor revisa y respeta las buenas prácticas de contribución.
-
-## 🔐 Vulnerabilidades de Seguridad
-
-Si descubres alguna vulnerabilidad de seguridad en este formulario, por favor contáctame para poder solucionarlo de inmediato.
-
-## 📄 Licencia
-
-Este proyecto es software libre y está disponible bajo una licencia abierta. Puedes usarlo, modificarlo y adaptarlo libremente.
-
----
 
 https://github.com/juanmafx
