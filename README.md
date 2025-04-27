@@ -268,4 +268,4 @@ Este proyecto es software libre y está disponible bajo una licencia abierta. Pu
 
 ---
 
-<p align="center">Hecho con 💻 por Juanmafx</p>
+https://github.com/juanmafx
