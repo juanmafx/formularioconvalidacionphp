@@ -10,6 +10,7 @@ use PHPMailer\PHPMailer\PHPMailer;
 
 final readonly class SmtpSubmissionMailer implements SubmissionMailer
 {
+    private const int SMTP_TIMEOUT_SECONDS = 10;
     private const array LABELS = [
         'name' => 'Name',
         'address' => 'Current address',
@@ -40,6 +41,8 @@ final readonly class SmtpSubmissionMailer implements SubmissionMailer
     {
         $mailer = new PHPMailer(true);
         $mailer->isSMTP();
+        $mailer->Timeout = self::SMTP_TIMEOUT_SECONDS;
+        $mailer->getSMTPInstance()->Timelimit = self::SMTP_TIMEOUT_SECONDS;
         $mailer->Host = $this->config->mailHost;
         $mailer->Port = $this->config->mailPort;
         $mailer->SMTPSecure = $this->config->mailEncryption === 'smtps' ? PHPMailer::ENCRYPTION_SMTPS : PHPMailer::ENCRYPTION_STARTTLS;

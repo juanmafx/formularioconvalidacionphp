@@ -47,7 +47,8 @@ CREATE TABLE IF NOT EXISTS audit_events (
         'login_succeeded',
         'recovery_code_used',
         'logout',
-        'submission_viewed'
+        'submission_viewed',
+        'submission_list_viewed'
     )),
     subject_id TEXT,
     client_fingerprint TEXT NOT NULL CHECK (length(client_fingerprint) = 64),

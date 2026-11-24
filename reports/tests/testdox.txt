@@ -3,6 +3,7 @@ Admin Flow (ContactForm\Tests\Functional\AdminFlow)
  [x] Password alone does not grant access
  [x] Second factor page requires password step
  [x] Full sign in shows decrypted submission and audits
+ [x] Listing submissions is audited
  [x] Stored xss is escaped in admin views
  [x] Session is regenerated at each privilege change
  [x] Wrong password and unknown user are indistinguishable
@@ -48,6 +49,9 @@ Contact Flow (ContactForm\Tests\Functional\ContactFlow)
  [x] Rate limits submissions
  [x] Mail failure keeps submission and records status
  [x] Rejects oversized body
+ [x] Rejects post without declared length
+ [x] Rate limit covers whole ipv 6 network
+ [x] Strict transport security excludes subdomains
  [x] Unknown route returns not found
 
 Contact Validator (ContactForm\Tests\Unit\ContactValidator)
@@ -108,6 +112,7 @@ Password Hasher (ContactForm\Tests\Unit\PasswordHasher)
  [x] Rejects oversized password
  [x] Rejects null bytes
  [x] Verify handles hostile input
+ [x] Rejected input still performs hashing work
  [x] Burn verification accepts hostile input
  [x] Detects outdated parameters
 
@@ -116,12 +121,26 @@ Rate Limiter (ContactForm\Tests\Unit\RateLimiter)
  [x] Resets after window
  [x] Isolates scopes and identifiers
  [x] Stores only keyed digests
+ [x] Groups clients by network with data set "ipv4 unchanged"
+ [x] Groups clients by network with data set "ipv4-mapped ipv6 uses ipv4"
+ [x] Groups clients by network with data set "ipv6 keeps network prefix"
+ [x] Groups clients by network with data set "ipv6 same prefix"
+ [x] Groups clients by network with data set "ipv6 other prefix"
+ [x] Groups clients by network with data set "non-address unchanged"
  [x] Purges expired buckets
 
 Recovery Codes (ContactForm\Tests\Unit\RecoveryCodes)
  [x] Generates unique formatted codes
  [x] Normalization ignores case and separators
  [x] Rejects invalid codes
+
+Request (ContactForm\Tests\Unit\Request)
+ [x] Parses declared content length with data set "missing"
+ [x] Parses declared content length with data set "empty"
+ [x] Parses declared content length with data set "negative"
+ [x] Parses declared content length with data set "not numeric"
+ [x] Parses declared content length with data set "zero"
+ [x] Parses declared content length with data set "declared"
 
 Schema (ContactForm\Tests\Unit\Schema)
  [x] Creates all tables
@@ -130,6 +149,7 @@ Schema (ContactForm\Tests\Unit\Schema)
  [x] Rejects unknown notification status
 
 Smtp Submission Mailer (ContactForm\Tests\Unit\SmtpSubmissionMailer)
+ [x] Bounds smtp wait time
  [x] Default notification omits personal data
  [x] Sender is never the visitor
  [x] Escapes html in body

@@ -118,6 +118,29 @@ final class ContactFlowTest extends TestCase
         self::assertSame(413, $response->status);
     }
 
+    public function testRejectsPostWithoutDeclaredLength(): void
+    {
+        $response = $this->harness->application->kernel->handle(new Request('POST', '/', [], [], '198.51.100.7', null));
+
+        self::assertSame(411, $response->status);
+    }
+
+    public function testRateLimitCoversWholeIpv6Network(): void
+    {
+        for ($host = 1; $host <= 10; $host++) {
+            $address = '2001:db8:1:2::' . dechex($host);
+            self::assertSame(303, $this->harness->post('/', TestHarness::validContact(), '/', $address)->status);
+        }
+
+        self::assertSame(429, $this->harness->post('/', TestHarness::validContact(), '/', '2001:db8:1:2::ff')->status);
+        self::assertSame(303, $this->harness->post('/', TestHarness::validContact(), '/', '2001:db8:1:3::1')->status);
+    }
+
+    public function testStrictTransportSecurityExcludesSubdomains(): void
+    {
+        self::assertSame('max-age=31536000', $this->harness->get('/')->headers['Strict-Transport-Security']);
+    }
+
     public function testUnknownRouteReturnsNotFound(): void
     {
         self::assertSame(404, $this->harness->get('/index.php.bak')->status);

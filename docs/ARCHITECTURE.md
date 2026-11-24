@@ -48,9 +48,9 @@ frontend/
 
 ### Contact submission
 
-1. The kernel enforces the body size limit and validates the CSRF token.
+1. The kernel rejects a POST without a declared length or above 64 KiB, then validates the CSRF token.
 2. A filled honeypot ends the request with a normal-looking success response and stores nothing.
-3. The per-client rate limit is applied.
+3. The per-client rate limit is applied, grouping IPv6 clients by /64.
 4. `ContactValidator` normalizes and validates each field.
 5. The submission is encrypted and stored.
 6. A notification is attempted. A mail failure is recorded and does not lose the submission.
@@ -71,7 +71,7 @@ frontend/
 | TOTP secrets | XChaCha20-Poly1305, bound to the account |
 | Passwords | Argon2id with a per-password random salt |
 | Recovery codes | SHA-256 of 80-bit random codes, single use |
-| Client addresses | Keyed HMAC in rate limit and audit tables |
+| Client addresses | Keyed HMAC in rate limit and audit tables; the rate limit key uses the /64 for IPv6 |
 
 Encryption keys are derived from the keyring with HKDF using separate context strings. Timestamps, notification status, key ids, and approximate ciphertext length are not encrypted.
 
@@ -79,11 +79,14 @@ Encryption keys are derived from the keyring with HKDF using separate context st
 
 - Run PHP-FPM behind nginx or Caddy with TLS, and expose only `frontend/public`.
 - Keep the database on persistent storage owned by the PHP user, outside the web root.
-- Inject configuration through the service manager or a secret store.
+- Inject configuration through the service manager or a secret store. PHP-FPM clears the environment by default, so pass each variable with `env[NAME]` in the pool or set `clear_env = no`.
+- Set `post_max_size = 64K` and `file_uploads = Off`, because PHP parses request bodies before the application's own limit runs.
+- Keep `display_errors = Off` and `expose_php = Off` in the PHP configuration so startup errors and the PHP version are not exposed.
 - Schedule `maintenance:purge` daily.
 
 ```nginx
 root /srv/contact-form/frontend/public;
+client_max_body_size 64k;
 
 location /assets/ {
     try_files $uri =404;

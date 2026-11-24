@@ -30,6 +30,14 @@ final class SmtpSubmissionMailerTest extends TestCase
         return ContactSubmission::fromArray($overrides + TestHarness::validContact());
     }
 
+    public function testBoundsSmtpWaitTime(): void
+    {
+        $mailer = self::mailer(false)->compose(self::SUBMISSION_ID, self::submission());
+
+        self::assertSame(10, $mailer->Timeout);
+        self::assertSame(10, $mailer->getSMTPInstance()->Timelimit);
+    }
+
     private static function message(PHPMailer $mailer): string
     {
         self::assertTrue($mailer->preSend());

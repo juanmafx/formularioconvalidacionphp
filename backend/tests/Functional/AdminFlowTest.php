@@ -76,6 +76,14 @@ final class AdminFlowTest extends TestCase
         self::assertSame(1, $this->auditCount('submission_viewed'));
     }
 
+    public function testListingSubmissionsIsAudited(): void
+    {
+        $this->harness->signIn();
+        $this->harness->get('/admin');
+
+        self::assertSame(1, $this->auditCount('submission_list_viewed'));
+    }
+
     public function testStoredXssIsEscapedInAdminViews(): void
     {
         $id = $this->storeSubmission(['name' => '<img src=x onerror=alert(1)>', 'message' => '<script>alert(1)</script>']);

@@ -9,6 +9,7 @@ use ContactForm\Security\RateLimiter;
 use ContactForm\Tests\Support\FixedClock;
 use ContactForm\Tests\Support\TestHarness;
 use PDO;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class RateLimiterTest extends TestCase
@@ -58,6 +59,24 @@ final class RateLimiterTest extends TestCase
 
         self::assertMatchesRegularExpression('/\A[a-f0-9]{64}\z/', $key);
         self::assertStringNotContainsString('203.0.113.9', $key);
+    }
+
+    #[DataProvider('clientNetworks')]
+    public function testGroupsClientsByNetwork(string $address, string $expected): void
+    {
+        self::assertSame($expected, RateLimiter::clientNetwork($address));
+    }
+
+    public static function clientNetworks(): array
+    {
+        return [
+            'ipv4 unchanged' => ['203.0.113.9', '203.0.113.9'],
+            'ipv4-mapped ipv6 uses ipv4' => ['::ffff:203.0.113.9', '203.0.113.9'],
+            'ipv6 keeps network prefix' => ['2001:db8:1:2:aaaa:bbbb:cccc:dddd', '20010db800010002::/64'],
+            'ipv6 same prefix' => ['2001:db8:1:2::1', '20010db800010002::/64'],
+            'ipv6 other prefix' => ['2001:db8:1:3::1', '20010db800010003::/64'],
+            'non-address unchanged' => ['not-an-address', 'not-an-address'],
+        ];
     }
 
     public function testPurgesExpiredBuckets(): void

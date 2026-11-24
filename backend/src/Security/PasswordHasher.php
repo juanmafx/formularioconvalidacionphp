@@ -30,7 +30,13 @@ final readonly class PasswordHasher
 
     public function verify(string $password, string $hash): bool
     {
-        return strlen($password) <= self::MAX_LENGTH && !str_contains($password, "\0") && password_verify($password, $hash);
+        if (strlen($password) > self::MAX_LENGTH || str_contains($password, "\0")) {
+            $this->burnVerification($password);
+
+            return false;
+        }
+
+        return password_verify($password, $hash);
     }
 
     public function burnVerification(string $password): void

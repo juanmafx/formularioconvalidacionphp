@@ -31,6 +31,7 @@ final readonly class Response
     public function emit(): void
     {
         http_response_code($this->status);
+        header_remove('X-Powered-By');
         foreach ($this->headers as $name => $value) {
             header($name . ': ' . $value);
         }

@@ -6,9 +6,13 @@ use ContactForm\Application;
 use ContactForm\Config\AppConfig;
 use ContactForm\Http\Request;
 
+ini_set('display_errors', '0');
+
 if (PHP_SAPI === 'cli-server') {
     $requestedPath = parse_url((string) ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH);
-    if (is_string($requestedPath) && str_starts_with($requestedPath, '/assets/') && is_file(__DIR__ . $requestedPath)) {
+    $assetRoot = realpath(__DIR__ . '/assets');
+    $resolvedPath = is_string($requestedPath) ? realpath(__DIR__ . $requestedPath) : false;
+    if ($assetRoot !== false && $resolvedPath !== false && str_starts_with($resolvedPath, $assetRoot . '/') && is_file($resolvedPath)) {
         return false;
     }
 }

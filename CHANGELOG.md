@@ -14,7 +14,7 @@ All notable changes are documented here. The format follows [Keep a Changelog](h
 
 ### Changed
 
-- **Breaking:** requires PHP 8.4 or later.
+- **Breaking:** requires PHP 8.4 or 8.5.
 - **Breaking:** restructured into `frontend/` and `backend/`. The web root is now `frontend/public`.
 - **Breaking:** form field names, identifiers, and all UI text are now in English.
 - **Breaking:** configuration moved to environment variables.

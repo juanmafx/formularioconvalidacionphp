@@ -1,7 +1,7 @@
 # Security Audit
 
 **Scope:** full source tree and Git history at the start of the 2026 modernization.
-**Method:** manual code review, history scan for credentials and private keys, `composer audit`, PHPStan level 8, automated tests, and a local HTTP smoke test.
+**Method:** manual code review, gitleaks on the full history, `composer audit`, PHPStan level 8, automated tests, a local HTTP smoke test, and probes against a local fake SMTP server.
 
 This is a self-review, not an independent penetration test.
 
@@ -22,9 +22,24 @@ This is a self-review, not an independent penetration test.
 | LEG-11 | Low | No security headers | Fixed |
 | LEG-12 | Low | Custom field values overwrote one variable | Fixed |
 
+## Findings in the rebuilt code
+
+A second review of the 2.0.0 branch found and fixed these issues before release.
+
+| ID | Severity | Finding | Status |
+| --- | --- | --- | --- |
+| REV-01 | Medium | Oversized or null-byte passwords skipped Argon2id for existing accounts, exposing valid usernames through response time | Fixed |
+| REV-02 | Medium | A POST without `Content-Length` bypassed the body size limit | Fixed: returns 411 |
+| REV-03 | Medium | An IPv6 client could evade per-address rate limits by rotating addresses within its /64 | Fixed |
+| REV-04 | Medium | SMTP waits of up to 300 seconds could tie up PHP workers from a public form | Fixed: 10 second limit |
+| REV-05 | Low | `display_errors` and `X-Powered-By` were left to the PHP defaults | Fixed in the application |
+| REV-06 | Low | The development server's asset check revealed whether files outside the web root exist | Fixed |
+| REV-07 | Low | HSTS `includeSubDomains` could force HTTPS on unrelated sibling hosts | Fixed: directive removed |
+| REV-08 | Low | Viewing the submission list exposed names and emails without an audit event | Fixed |
+
 ## Secret scan
 
-A pattern-based scan of the full history found no private keys or common API token formats, and no SMTP credentials appear in the legacy code. Earlier revisions of the legacy files do contain literal email addresses, including the former notification recipient. They are not reproduced here and are absent from the current tree, but they remain in Git history.
+gitleaks reports two findings across the history and working tree. Both are the public RFC 6238 test secret used as a TOTP fixture in the test suite. No private keys or SMTP credentials appear in the history. Earlier revisions of the legacy files do contain literal email addresses, including the former notification recipient. They are not reproduced here and are absent from the current tree, but they remain in Git history.
 
 ## Controls added
 
@@ -33,10 +48,10 @@ A pattern-based scan of the full history found no private keys or common API tok
 | Authentication | Argon2id, TOTP with replay protection, single-use recovery codes, lockout |
 | Sessions | Strict mode, HttpOnly, SameSite=Strict, Secure and `__Host-` in production, id rotation, timeouts |
 | Data at rest | XChaCha20-Poly1305 with context binding, keys from the environment |
-| Input | Server-side allow-list validation, length limits, control character rejection |
+| Input | Server-side validation, email and phone formats, length limits, control character rejection |
 | Output | Contextual escaping and a CSP that blocks scripts |
-| Abuse | Rate limits, honeypot, body size limit |
-| Mail | Fixed sender, TLS required, certificate verification left enabled |
+| Abuse | Rate limits with IPv6 /64 grouping, honeypot, declared body size limit |
+| Mail | Fixed sender, TLS required, certificate verification left enabled, bounded SMTP wait |
 | Supply chain | Locked dependencies, install scripts disabled, CI actions pinned by commit |
 
 ## Open items
@@ -44,7 +59,7 @@ A pattern-based scan of the full history found no private keys or common API tok
 | ID | Severity | Item |
 | --- | --- | --- |
 | OPEN-01 | High | The legacy code remains on `master` and in Git history until this branch is merged. It must not be deployed. |
-| OPEN-02 | Medium | Live SMTP delivery and the secure cookie configuration behind TLS were not exercised. |
+| OPEN-02 | Medium | Live SMTP delivery and the secure cookie configuration behind real TLS were not exercised. A local fake SMTP server confirmed that a server without STARTTLS and an untrusted certificate are both refused. |
 | OPEN-03 | Medium | Rate limiting depends on a correct `REMOTE_ADDR` when deployed behind a proxy. |
 | OPEN-04 | Low | Metadata such as timestamps and ciphertext length is not encrypted. |
 | OPEN-05 | Low | Account lockout can be triggered deliberately to delay a legitimate admin for 15 minutes. |

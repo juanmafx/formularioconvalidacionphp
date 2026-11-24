@@ -39,7 +39,7 @@ See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for module responsibilities, re
 
 ## Quick start
 
-Requirements: PHP 8.4 (the version the test suite runs on) with `mbstring`, `pdo_sqlite`, `session`, `sodium`, and Argon2 support, plus Composer 2. Running the tests also needs `dom`, `xml`, and `xmlwriter`.
+Requirements: PHP 8.4 or 8.5 (the suite was run on both) with `mbstring`, `pdo_sqlite` backed by SQLite 3.37 or later, `session`, `sodium`, and Argon2 support, plus Composer 2. Running the tests also needs `dom`, `xml`, and `xmlwriter`.
 
 ```bash
 composer install --no-scripts --no-plugins
@@ -72,11 +72,11 @@ APP_SECURE_COOKIES=false php -S 127.0.0.1:8080 -t frontend/public frontend/publi
 
 ### Rotating the encryption key
 
-Append the new entry to `APP_KEYRING` and set `APP_ACTIVE_KEY_ID` to it. New records use the new key and older records stay readable. There is no bulk re-encryption command, so retired keys must stay in the keyring until the records they protect are purged.
+Append the new entry to `APP_KEYRING` and set `APP_ACTIVE_KEY_ID` to it. New records use the new key and older records stay readable. There is no bulk re-encryption command, so retired keys must stay in the keyring until the records they protect are purged. Rate limit and audit pseudonyms derive from the active key, so a rotation resets rate limit counters and audit fingerprints from before and after it cannot be correlated.
 
 ## Configuration
 
-All configuration comes from environment variables. Invalid or unsafe values stop the application from starting.
+All configuration comes from environment variables. Malformed values, weak Argon2id parameters, and, when mail is enabled, plaintext SMTP stop the application from starting.
 
 | Variable | Default | Purpose |
 | --- | --- | --- |
@@ -114,13 +114,14 @@ If your local PHP lacks the required extensions, run the suite in the official i
 docker run --rm --network none -u "$(id -u):$(id -g)" -v "$PWD":/app -w /app php:8.4-cli vendor/bin/phpunit
 ```
 
-The output of the last recorded run is in [reports/tests/](reports/tests/). CI runs dependency audit, PHPStan, and PHPUnit on every push and pull request.
+The output of the last recorded run is in [reports/tests/](reports/tests/). The CI workflow is configured to run the dependency audit, PHPStan, and PHPUnit on pushes to `master` and `modernize/2026` and on pull requests. It has not run yet because this branch has not been pushed.
 
 ## Security notes
 
 - Serve only `frontend/public` and terminate TLS in front of the application.
 - Keep `.env`, the database, and backups out of the web root. Losing the keyring makes stored submissions unrecoverable.
-- Rate limiting uses `REMOTE_ADDR`. Behind a reverse proxy, configure the web server to restore the real client address, or all visitors will share one limit.
+- Rate limiting uses `REMOTE_ADDR`, grouped by /64 for IPv6. Behind a reverse proxy, configure the web server to restore the real client address, or all visitors will share one limit.
+- PHP parses request bodies before the application runs, so also enforce the 64 KiB limit in the web server and PHP settings, as shown in the [recommended deployment](docs/ARCHITECTURE.md#recommended-deployment).
 - File uploads were removed. The legacy code handled them unsafely and the form never exposed an upload field.
 
 See [SECURITY.md](SECURITY.md) and [docs/SECURITY_AUDIT.md](docs/SECURITY_AUDIT.md).

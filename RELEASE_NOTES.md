@@ -14,9 +14,9 @@ Version 2.0.0 is a complete security-focused rewrite of the 2013 contact form. I
 
 ## Upgrade notes
 
-There is no automated upgrade path because the original application stored nothing.
+There is no automated upgrade path because the original application had no database.
 
-1. Install PHP 8.4 or later and point the web root at `frontend/public`.
+1. Install PHP 8.4 or 8.5 and point the web root at `frontend/public`.
 2. Configure the environment from `.env.example` and generate a key.
 3. Run `php bin/console db:migrate` and create an admin account.
 4. Update any external integration that posts to the form to use the new English field names and a CSRF token.
@@ -24,6 +24,7 @@ There is no automated upgrade path because the original application stored nothi
 ## Known limitations
 
 - SMTP delivery has not been tested against a live mail server.
+- The CI workflow has not run because the branch has not been pushed.
 - The `__Host-` secure cookie configuration has not been exercised behind real TLS.
 - There is no bulk re-encryption command for key rotation.
 - There is no self-service TOTP reset or admin removal command.

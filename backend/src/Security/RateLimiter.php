@@ -16,6 +16,19 @@ final readonly class RateLimiter
     ) {
     }
 
+    public static function clientNetwork(string $address): string
+    {
+        if (filter_var($address, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) === false) {
+            return $address;
+        }
+        $packed = (string) inet_pton($address);
+        if (str_starts_with($packed, str_repeat("\0", 10) . "\xff\xff")) {
+            return (string) inet_ntop(substr($packed, 12));
+        }
+
+        return bin2hex(substr($packed, 0, 8)) . '::/64';
+    }
+
     public function allow(string $scope, string $identifier, int $limit, int $windowSeconds): bool
     {
         $now = $this->clock->now();

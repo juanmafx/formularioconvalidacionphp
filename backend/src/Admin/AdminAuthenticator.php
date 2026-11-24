@@ -51,7 +51,7 @@ final readonly class AdminAuthenticator
     {
         $normalizedUsername = strtolower(trim($username));
         if (
-            !$this->rateLimiter->allow('login-address', $clientAddress, self::LOGIN_LIMIT, self::LOGIN_WINDOW_SECONDS)
+            !$this->rateLimiter->allow('login-address', RateLimiter::clientNetwork($clientAddress), self::LOGIN_LIMIT, self::LOGIN_WINDOW_SECONDS)
             || !$this->rateLimiter->allow('login-account', $normalizedUsername, self::LOGIN_LIMIT, self::LOGIN_WINDOW_SECONDS)
         ) {
             return AuthOutcome::RateLimited;

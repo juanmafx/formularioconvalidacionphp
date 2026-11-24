@@ -53,7 +53,10 @@ final readonly class Kernel
 
     private function dispatch(Request $request): Response
     {
-        if ($request->contentLength > self::MAX_BODY_BYTES) {
+        if ($request->method === 'POST' && $request->contentLength === null) {
+            return $this->error(411, 'Length required', 'The request must declare its length.');
+        }
+        if (($request->contentLength ?? 0) > self::MAX_BODY_BYTES) {
             return $this->error(413, 'Request too large', 'The submitted data is too large.');
         }
         $this->session->start();
@@ -96,7 +99,7 @@ final readonly class Kernel
         if ($request->postString(self::HONEYPOT_FIELD) !== '') {
             return Response::redirect('/?sent=1');
         }
-        if (!$this->rateLimiter->allow('contact', $request->clientAddress, self::CONTACT_LIMIT, self::CONTACT_WINDOW_SECONDS)) {
+        if (!$this->rateLimiter->allow('contact', RateLimiter::clientNetwork($request->clientAddress), self::CONTACT_LIMIT, self::CONTACT_WINDOW_SECONDS)) {
             return $this->error(429, 'Too many requests', 'Please wait a few minutes and try again.')
                 ->withHeaders(['Retry-After' => (string) self::CONTACT_WINDOW_SECONDS]);
         }
@@ -170,13 +173,15 @@ final readonly class Kernel
 
     private function listSubmissions(Request $request): Response
     {
-        if ($this->authenticator->currentUserId() === null) {
+        $userId = $this->authenticator->currentUserId();
+        if ($userId === null) {
             return Response::redirect('/admin/login');
         }
         $total = $this->submissions->count();
         $lastPage = max(1, (int) ceil($total / self::ADMIN_PAGE_SIZE));
         $requested = filter_var($request->query['page'] ?? 1, FILTER_VALIDATE_INT, ['options' => ['min_range' => 1, 'default' => 1]]);
         $page = max(1, min((int) $requested, $lastPage));
+        $this->audit->record('submission_list_viewed', $userId, $request->clientAddress);
 
         return Response::html($this->view->page('admin/submissions', 'Submissions', [
             'submissions' => $this->submissions->page($page, self::ADMIN_PAGE_SIZE),
@@ -222,7 +227,7 @@ final readonly class Kernel
             'Cache-Control' => 'no-store',
         ];
         if ($this->secureTransport) {
-            $headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains';
+            $headers['Strict-Transport-Security'] = 'max-age=31536000';
         }
 
         return $headers;

@@ -65,6 +65,24 @@ final class PasswordHasherTest extends TestCase
         self::assertFalse($hasher->verify(str_repeat('a', 100000), $hash));
     }
 
+    public function testRejectedInputStillPerformsHashingWork(): void
+    {
+        $hasher = self::hasher();
+        $hash = $hasher->hash(self::PASSWORD);
+        $startedAt = hrtime(true);
+        $hasher->verify('another-long-password', $hash);
+        $normalDuration = hrtime(true) - $startedAt;
+        $startedAt = hrtime(true);
+        $hasher->verify(str_repeat('a', PasswordHasher::MAX_LENGTH + 1), $hash);
+        $oversizedDuration = hrtime(true) - $startedAt;
+        $startedAt = hrtime(true);
+        $hasher->verify("with\0null-byte-value", $hash);
+        $nullByteDuration = hrtime(true) - $startedAt;
+
+        self::assertGreaterThan($normalDuration / 4, $oversizedDuration);
+        self::assertGreaterThan($normalDuration / 4, $nullByteDuration);
+    }
+
     public function testBurnVerificationAcceptsHostileInput(): void
     {
         self::hasher()->burnVerification("with\0null-byte-value");
