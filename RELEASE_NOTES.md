@@ -1,33 +1,24 @@
-# Release Notes: 2.0.0
+# Release Notes: 2.0.1
 
-**Status:** prepared, not tagged or published.
+Released 2026-11-24.
 
-Version 2.0.0 is a complete security-focused rewrite of the 2013 contact form. It keeps the original form fields and adds encrypted storage and a protected admin area for reading submissions.
+This is a documentation-only patch release. There is no code behaviour change from 2.0.0.
 
-## Highlights
+## Changes
 
-- XChaCha20-Poly1305 encryption of stored personal data, with keys from the environment.
-- Argon2id passwords, TOTP two-factor authentication, and one-time recovery codes.
-- CSRF protection, rate limiting, strict validation, and mail header injection protection.
-- Maintained PHPMailer dependency in place of the bundled 1.73 copy.
-- Automated tests, static analysis, CI, and a committed test report.
+- The changelog and release notes now record 2.0.0 as released on 2026-11-24.
+- The security audit marks OPEN-01 and OPEN-07 as resolved by the 2.0.0 publication and the 2026-11-24 history rewrite. Anything that was ever published should still be treated as exposed.
+- The README records that the CI workflow ran and passed after publication.
+- The third-party notice for the former bundled PHPMailer 1.73 copy no longer claims it is available in the Git history.
 
 ## Upgrade notes
 
-There is no automated upgrade path because the original application had no database.
-
-1. Install PHP 8.4 or 8.5 and point the web root at `frontend/public`.
-2. Configure the environment from `.env.example` and generate a key.
-3. Run `php bin/console db:migrate` and create an admin account.
-4. Update any external integration that posts to the form to use the new English field names and a CSRF token.
+No migration is needed from 2.0.0.
 
 ## Known limitations
 
 - SMTP delivery has not been tested against a live mail server.
-- The CI workflow has not run because the branch has not been pushed.
 - The `__Host-` secure cookie configuration has not been exercised behind real TLS.
 - There is no bulk re-encryption command for key rotation.
 - There is no self-service TOTP reset or admin removal command.
 - No license has been selected for the project's own code.
-
-Test evidence is in [reports/tests/](reports/tests/).

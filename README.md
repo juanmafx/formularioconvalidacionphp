@@ -114,7 +114,7 @@ If your local PHP lacks the required extensions, run the suite in the official i
 docker run --rm --network none -u "$(id -u):$(id -g)" -v "$PWD":/app -w /app php:8.4-cli vendor/bin/phpunit
 ```
 
-The output of the last recorded run is in [reports/tests/](reports/tests/). The CI workflow is configured to run the dependency audit, PHPStan, and PHPUnit on pushes to `master` and `modernize/2026` and on pull requests. It has not run yet because this branch has not been pushed.
+The output of the last recorded run is in [reports/tests/](reports/tests/). The CI workflow is configured to run the dependency audit, PHPStan, and PHPUnit on pushes to `master` and `modernize/2026` and on pull requests. It ran on `master` after the 2.0.0 publication on 2026-11-24 and passed.
 
 ## Security notes
 

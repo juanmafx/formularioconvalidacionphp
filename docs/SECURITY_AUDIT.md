@@ -39,7 +39,7 @@ A second review of the 2.0.0 branch found and fixed these issues before release.
 
 ## Secret scan
 
-gitleaks reports two findings across the history and working tree. Both are the public RFC 6238 test secret used as a TOTP fixture in the test suite. No private keys or SMTP credentials appear in the history. Earlier revisions of the legacy files do contain literal email addresses, including the former notification recipient. They are not reproduced here and are absent from the current tree, but they remain in Git history.
+gitleaks reports two findings across the history and working tree. Both are the public RFC 6238 test secret used as a TOTP fixture in the test suite. No private keys or SMTP credentials appear in the history. Earlier revisions of the legacy files contained literal email addresses, including the former notification recipient. They are not reproduced here and are absent from the current tree. On 2026-11-24 the published history was rewritten to keep only the 2026 modernization commits, so those revisions are no longer part of any branch or tag.
 
 ## Controls added
 
@@ -58,10 +58,15 @@ gitleaks reports two findings across the history and working tree. Both are the 
 
 | ID | Severity | Item |
 | --- | --- | --- |
-| OPEN-01 | High | The legacy code remains on `master` and in Git history until this branch is merged. It must not be deployed. |
 | OPEN-02 | Medium | Live SMTP delivery and the secure cookie configuration behind real TLS were not exercised. A local fake SMTP server confirmed that a server without STARTTLS and an untrusted certificate are both refused. |
 | OPEN-03 | Medium | Rate limiting depends on a correct `REMOTE_ADDR` when deployed behind a proxy. |
 | OPEN-04 | Low | Metadata such as timestamps and ciphertext length is not encrypted. |
 | OPEN-05 | Low | Account lockout can be triggered deliberately to delay a legitimate admin for 15 minutes. |
 | OPEN-06 | Low | No bulk re-encryption after key rotation and no TOTP reset command. |
-| OPEN-07 | Low | Email addresses remain in the history of the legacy files. Removing them would require a history rewrite, which is an owner decision. |
+
+## Resolved after the audit
+
+| ID | Severity | Item | Resolution |
+| --- | --- | --- | --- |
+| OPEN-01 | High | The legacy code was on `master` and in Git history | Resolved on 2026-11-24: 2.0.0 was published on `master`, and the history rewrite removed the legacy code from every branch and tag. The legacy code must still not be deployed. |
+| OPEN-07 | Low | Email addresses were in the history of the legacy files | Resolved on 2026-11-24 by the history rewrite. Old commits may stay reachable by direct SHA until GitHub purges unreferenced objects, so treat anything that was ever published as exposed. |

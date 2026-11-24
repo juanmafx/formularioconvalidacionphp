@@ -2,7 +2,7 @@
     "name": "juanmafx/formularioconvalidacionphp",
     "description": "Secure PHP contact form with encrypted storage and a TOTP-protected admin area.",
     "type": "project",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "require": {
         "php": ">=8.4 <8.6",
         "ext-mbstring": "*",
