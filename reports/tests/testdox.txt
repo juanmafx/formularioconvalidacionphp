@@ -1,0 +1,155 @@
+Admin Flow (ContactForm\Tests\Functional\AdminFlow)
+ [x] Admin pages require authentication
+ [x] Password alone does not grant access
+ [x] Second factor page requires password step
+ [x] Full sign in shows decrypted submission and audits
+ [x] Stored xss is escaped in admin views
+ [x] Session is regenerated at each privilege change
+ [x] Wrong password and unknown user are indistinguishable
+ [x] Null byte password does not error
+ [x] Rejects invalid totp
+ [x] Rejects replayed totp
+ [x] Pending second factor expires
+ [x] Recovery code works exactly once
+ [x] Account locks after repeated password failures
+ [x] Fifth second factor failure locks the account
+ [x] Login is rate limited per address
+ [x] Idle session expires
+ [x] Absolute session lifetime is enforced
+ [x] Logout ends session
+ [x] Tampered stored record fails closed
+ [x] Page parameter handles hostile input
+ [x] Stores totp secret encrypted
+
+App Config (ContactForm\Tests\Unit\AppConfig)
+ [x] Applies secure defaults
+ [x] Rejects unsafe configuration with data set "weak argon memory"
+ [x] Rejects unsafe configuration with data set "weak argon time"
+ [x] Rejects unsafe configuration with data set "bad boolean"
+ [x] Rejects unsafe configuration with data set "plaintext smtp"
+ [x] Rejects unsafe configuration with data set "missing mail host"
+ [x] Rejects unsafe configuration with data set "invalid mail recipient"
+ [x] Requires keyring
+
+Console (ContactForm\Tests\Unit\Console)
+ [x] Generates parsable key
+ [x] Creates admin with encrypted secret
+ [x] Rejects weak password
+ [x] Rejects invalid username
+ [x] Unknown command shows usage
+
+Contact Flow (ContactForm\Tests\Functional\ContactFlow)
+ [x] Renders form with csrf token and security headers
+ [x] Valid submission is encrypted at rest and notified
+ [x] Keeps all three custom fields
+ [x] Rejects missing csrf token
+ [x] Invalid submission is not stored and escapes echoed values
+ [x] Honeypot silently drops submission
+ [x] Rate limits submissions
+ [x] Mail failure keeps submission and records status
+ [x] Rejects oversized body
+ [x] Unknown route returns not found
+
+Contact Validator (ContactForm\Tests\Unit\ContactValidator)
+ [x] Accepts valid submission
+ [x] Trims whitespace
+ [x] Keeps non latin names
+ [x] Requires field with data set #0
+ [x] Requires field with data set #1
+ [x] Requires field with data set #2
+ [x] Rejects invalid input with data set "email header injection"
+ [x] Rejects invalid input with data set "name header injection"
+ [x] Rejects invalid input with data set "name line feed"
+ [x] Rejects invalid input with data set "phone header injection"
+ [x] Rejects invalid input with data set "address unicode line separator"
+ [x] Rejects invalid input with data set "name bidi override"
+ [x] Rejects invalid input with data set "malformed email"
+ [x] Rejects invalid input with data set "phone letters"
+ [x] Rejects invalid input with data set "phone too short"
+ [x] Rejects invalid input with data set "invalid utf8"
+ [x] Rejects invalid input with data set "null byte in message"
+ [x] Rejects invalid input with data set "array input"
+ [x] Rejects invalid input with data set "name too long"
+ [x] Rejects invalid input with data set "message too long"
+ [x] Allows line breaks in multi line fields
+
+Csrf Guard (ContactForm\Tests\Unit\CsrfGuard)
+ [x] Accepts issued token
+ [x] Token is stable within session
+ [x] Rejects wrong missing and non string tokens
+ [x] Rejects when no token issued
+ [x] Rotation invalidates previous token
+
+Field Cipher (ContactForm\Tests\Unit\FieldCipher)
+ [x] Round trips plaintext
+ [x] Ciphertext does not contain plaintext
+ [x] Nonces are unique
+ [x] Rejects different context
+ [x] Rejects tampered ciphertext
+ [x] Rejects malformed envelope
+ [x] Rejects unknown key id
+ [x] Decrypts with retired key after rotation
+
+Keyring (ContactForm\Tests\Unit\Keyring)
+ [x] Rejects invalid definitions with data set "missing separator"
+ [x] Rejects invalid definitions with data set "short key"
+ [x] Rejects invalid definitions with data set "invalid base64"
+ [x] Rejects invalid definitions with data set "uppercase id"
+ [x] Rejects invalid definitions with data set "duplicate id"
+ [x] Rejects invalid definitions with data set "inactive id"
+ [x] Generated entry parses
+ [x] Derived keys are domain separated
+
+Password Hasher (ContactForm\Tests\Unit\PasswordHasher)
+ [x] Produces argon 2id hash
+ [x] Salts each hash
+ [x] Verifies correct password only
+ [x] Rejects short password
+ [x] Rejects oversized password
+ [x] Rejects null bytes
+ [x] Verify handles hostile input
+ [x] Burn verification accepts hostile input
+ [x] Detects outdated parameters
+
+Rate Limiter (ContactForm\Tests\Unit\RateLimiter)
+ [x] Blocks after limit
+ [x] Resets after window
+ [x] Isolates scopes and identifiers
+ [x] Stores only keyed digests
+ [x] Purges expired buckets
+
+Recovery Codes (ContactForm\Tests\Unit\RecoveryCodes)
+ [x] Generates unique formatted codes
+ [x] Normalization ignores case and separators
+ [x] Rejects invalid codes
+
+Schema (ContactForm\Tests\Unit\Schema)
+ [x] Creates all tables
+ [x] Migration is idempotent
+ [x] Rejects non argon 2id hash
+ [x] Rejects unknown notification status
+
+Smtp Submission Mailer (ContactForm\Tests\Unit\SmtpSubmissionMailer)
+ [x] Default notification omits personal data
+ [x] Sender is never the visitor
+ [x] Escapes html in body
+ [x] Requires transport encryption
+ [x] Header values stay on one line
+
+Template Renderer (ContactForm\Tests\Unit\TemplateRenderer)
+ [x] Escapes markup and quotes
+ [x] Handles invalid utf 8 and non scalars
+
+Totp Verifier (ContactForm\Tests\Unit\TotpVerifier)
+ [x] Accepts rfc 6238 vectors with data set #0
+ [x] Accepts rfc 6238 vectors with data set #1
+ [x] Accepts rfc 6238 vectors with data set #2
+ [x] Accepts rfc 6238 vectors with data set #3
+ [x] Accepts rfc 6238 vectors with data set #4
+ [x] Rejects replay of accepted step
+ [x] Accepts one step of drift
+ [x] Rejects code outside drift window
+ [x] Rejects malformed codes
+ [x] Generated secret has 160 bits
+ [x] Provisioning uri carries issuer and account
+

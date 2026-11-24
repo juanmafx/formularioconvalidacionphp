@@ -1,0 +1,23 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use ContactForm\Application;
+use ContactForm\Config\AppConfig;
+use ContactForm\Console\Console;
+
+if (PHP_SAPI !== 'cli') {
+    exit(1);
+}
+
+$projectRoot = dirname(__DIR__);
+require $projectRoot . '/vendor/autoload.php';
+
+$console = new Console(
+    static fn (): Application => new Application(AppConfig::fromEnvironment(getenv(), $projectRoot), $projectRoot),
+    STDIN,
+    STDOUT,
+);
+
+exit($console->run($argv));
