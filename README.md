@@ -1,4 +1,4 @@
-# formularioconvalidacionphp
+# validated-contact-form-php
 
 A security-focused PHP 8.4 contact form with server-side validation, encrypted storage, and an admin area protected by a password and TOTP two-factor authentication.
 
